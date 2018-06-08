@@ -1,4 +1,4 @@
-package sample;
+package ch.jodo.mazerator;
 
 public enum Direction {
 

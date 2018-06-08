@@ -1,4 +1,4 @@
-package sample;
+package ch.jodo.mazerator;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -1,4 +1,4 @@
-package sample;
+package ch.jodo.mazerator;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 import java.util.Stack;
 
 public class Controller implements MazeGeneratorUpdateEvent {
-    private int mazeSize = 30;
+    private int mazeSize = 25;
     private Color visitedColor = Color.GREEN;
     private Color stackColor = Color.RED;
     private Color currentColor = Color.BLUE;
@@ -22,33 +22,35 @@ public class Controller implements MazeGeneratorUpdateEvent {
     @FXML
     public void initialize() {
         gc = canvas.getGraphicsContext2D();
-
-
     }
 
     public void onUpdate(final MazeGrid maze, final Stack<Cell> stack, final Cell current) {
         Platform.runLater(() -> {
-            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-            double cellSize = getCellSize();
+            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Ganzens Canvas leeren
+            double cellSize = getCellSize(); // Grösse der einzelnen Zellen berechnen
 
+            // Durch alle Zellen gehen, welche bereits besucht wurden und diese mit der passenden Farbe markieren
             for (Cell cell : maze.getCells()) {
                 if (cell.isVisited()) {
                     drawCell(cell, visitedColor);
                 }
             }
 
+            // Durch den aktuellen Stack gehen und diesem markieren (überschreibt die Markierung der besuchten Felder)
             for (Cell cell : stack) {
                 drawCell(cell, stackColor);
             }
 
+            // Aktuelle Zelle markieren
             drawCell(current, currentColor);
 
+            // Das Gitter wieder darübermalen
             drawMazeGrid(maze);
         });
 
 
         try {
-            Thread.sleep(40);
+            Thread.sleep(40); // Warten
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -104,10 +106,10 @@ public class Controller implements MazeGeneratorUpdateEvent {
     }
 
     private void drawBorder() {
-        drawLine(0, (int)getCellSize(), 0, (int)canvas.getHeight(), 6);
-        drawLine(0, (int)canvas.getHeight(), (int)getCellSize(), (int)canvas.getHeight(), 6);
-        drawLine(0, (int)getCellSize(), 0, (int)canvas.getHeight(), 6);
-        drawLine(0, (int)getCellSize(), 0, (int)canvas.getHeight(), 6);
+        drawLine(0, (int)getCellSize(), 0, (int)canvas.getHeight(), 6); // Linken Rand zeichnen
+        drawLine(0, (int)canvas.getHeight(), (int)canvas.getWidth(), (int)canvas.getHeight(), 6); // Unteren Rand zeichen
+        drawLine((int)canvas.getWidth(), 0, (int)canvas.getWidth(), (int)(canvas.getHeight() - getCellSize()), 6); // Rechten Rand zeichnen
+        drawLine(0, 0, (int)canvas.getWidth(), 0, 6); // Oberen Rand zeichen
     }
 
     @FXML

@@ -1,4 +1,4 @@
-package sample;
+package ch.jodo.mazerator;
 
 import java.util.LinkedList;
 import java.util.List;
