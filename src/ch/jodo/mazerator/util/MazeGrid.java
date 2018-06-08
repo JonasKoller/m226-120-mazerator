@@ -1,4 +1,7 @@
-package ch.jodo.mazerator;
+package ch.jodo.mazerator.util;
+
+import ch.jodo.mazerator.util.Cell;
+import ch.jodo.mazerator.util.Direction;
 
 import java.util.*;
 
@@ -42,7 +45,7 @@ public class MazeGrid {
         return cells;
     }
 
-    public Optional<Cell> getUnvisitedRandomNeighbor(int x, int y) {
+    public List<Cell> getNeighbors(int x, int y) {
         List<Cell> neighbors = new LinkedList<>();
 
         // get the neighbors;
@@ -51,23 +54,62 @@ public class MazeGrid {
         Cell bottom = getCell(x, y + 1);
         Cell left = getCell(x - 1, y);
 
-
         // check if neighbor is valid and not visited then add them to neighbors
-        if (top != null && !top.isVisited()) {
+
+        neighbors.add(top);
+        neighbors.add(right);
+        neighbors.add(bottom);
+        neighbors.add(left);
+
+        neighbors.removeIf(Objects::isNull);
+
+        return neighbors;
+    }
+
+    public List<Cell> getUnvisitedNeighbors(int x, int y) {
+        List<Cell> neighbors = getNeighbors(x, y);
+
+        neighbors.removeIf(Cell::isVisited);
+
+        return neighbors;
+    }
+
+    public List<Cell> getTouchableNeighbors(int x, int y) {
+        List<Cell> neighbors = new LinkedList<>();
+        Cell cell = getCell(x, y);
+
+        // get the neighbors;
+        if (!cell.isTopWall()) {
+            Cell top = getCell(x, y - 1);
             neighbors.add(top);
         }
 
-        if (right != null && !right.isVisited()) {
+        if (!cell.isRightWall()) {
+            Cell right = getCell(x + 1, y);
             neighbors.add(right);
         }
 
-        if (bottom != null && !bottom.isVisited()) {
+        if (!cell.isBottomWall()) {
+            Cell bottom = getCell(x, y + 1);
             neighbors.add(bottom);
         }
 
-        if (left != null && !left.isVisited()) {
+        if (!cell.isLeftWall()) {
+            Cell left = getCell(x - 1, y);
             neighbors.add(left);
         }
+
+
+        // check if neighbor is valid and not visited then add them to neighbors
+
+
+        neighbors.removeIf(Objects::isNull);
+
+        return neighbors;
+    }
+
+    public Optional<Cell> getUnvisitedRandomNeighbor(int x, int y) {
+        List<Cell> neighbors = getUnvisitedNeighbors(x, y);
 
         // if there are neighbors in the list return a random one
         if (neighbors.size() > 0) {

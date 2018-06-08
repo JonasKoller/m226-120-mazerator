@@ -1,11 +1,14 @@
-package ch.jodo.mazerator;
+package ch.jodo.mazerator.generator;
+
+import ch.jodo.mazerator.util.Cell;
+import ch.jodo.mazerator.util.MazeGrid;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
 
-public class MazeGenerator {
+public class RecursiveBacktrackerMazeGenerator {
 
     private List<MazeGeneratorUpdateEvent> updateEventListeners = new LinkedList<>();
 
@@ -27,11 +30,14 @@ public class MazeGenerator {
 
             // Start recursive function
             generateRecursive(maze, stack, start);
+
+            // When no more recursive functions called, the algorithm is finished and the maze is finished
+            notifyListenersForFinish(maze);
         }).start();
     }
 
     private void generateRecursive(MazeGrid maze, Stack<Cell> stack, Cell current) {
-        notifyListeners(maze, stack, current);
+        notifyListenersForUpdates(maze, stack, current);
 
         // set current cell visited
         current.setVisited(true);
@@ -82,8 +88,13 @@ public class MazeGenerator {
         updateEventListeners.remove(listener);
     }
 
-    private void notifyListeners(final MazeGrid maze, final Stack<Cell> stack, final Cell current) {
+    private void notifyListenersForUpdates(final MazeGrid maze, final Stack<Cell> stack, final Cell current) {
         for (MazeGeneratorUpdateEvent listener : updateEventListeners)
             listener.onUpdate(maze, stack, current);
+    }
+
+    private void notifyListenersForFinish(final MazeGrid maze) {
+        for (MazeGeneratorUpdateEvent listener : updateEventListeners)
+            listener.onFinish(maze);
     }
 }

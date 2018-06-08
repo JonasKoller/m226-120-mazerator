@@ -1,4 +1,4 @@
-package ch.jodo.mazerator;
+package ch.jodo.mazerator.util;
 
 public class Cell {
 
@@ -8,6 +8,8 @@ public class Cell {
     private boolean leftWall = true;
 
     private boolean visited = false;
+    private int distance = Integer.MAX_VALUE;
+    private Cell previous = null;
 
     private int x;
     private int y;
@@ -63,5 +65,21 @@ public class Cell {
 
     public int getY() {
         return y;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
+    public Cell getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(Cell previous) {
+        this.previous = previous;
     }
 }
