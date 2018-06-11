@@ -5,7 +5,7 @@ import ch.jodo.mazerator.util.MazeGrid;
 
 import java.util.Stack;
 
-public interface MazeGeneratorUpdateEvent {
+public interface MazeGeneratorEvent {
 
     void onUpdate(final MazeGrid maze, final Stack<Cell> stack, final Cell current);
 

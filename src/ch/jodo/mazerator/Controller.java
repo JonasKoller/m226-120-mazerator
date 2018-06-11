@@ -44,6 +44,9 @@ public class Controller {
         RecursiveBacktrackerMazeGenerator gen = new RecursiveBacktrackerMazeGenerator();
         MazeGenerationDrawer mgd = new MazeGenerationDrawer(waitTime, drawingUtil, visitedColor, stackColor, currentColor, COLOR_START_CELL, COLOR_END_CELL);
         gen.subscribe(mgd);
+        gen.subscribe((finishedMaze) -> {
+            System.out.print(finishedMaze.getStartCell());
+        });
         gen.generateMaze(mazeSize, mazeSize);
     }
 

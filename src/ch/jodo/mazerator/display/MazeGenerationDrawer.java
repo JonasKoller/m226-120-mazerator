@@ -1,6 +1,6 @@
 package ch.jodo.mazerator.display;
 
-import ch.jodo.mazerator.generator.MazeGeneratorUpdateEvent;
+import ch.jodo.mazerator.generator.MazeGeneratorEvent;
 import ch.jodo.mazerator.util.Cell;
 import ch.jodo.mazerator.util.MazeGrid;
 import javafx.application.Platform;
@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 
 import java.util.Stack;
 
-public class MazeGenerationDrawer implements MazeGeneratorUpdateEvent {
+public class MazeGenerationDrawer implements MazeGeneratorEvent {
 
     private int waitTime;
     private DrawingUtil du;
