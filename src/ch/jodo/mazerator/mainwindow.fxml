@@ -8,6 +8,6 @@
    <children>
       <Canvas fx:id="canvas" height="700.0" layoutX="50.0" width="700.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" />
       <Button layoutX="75.0" layoutY="14.0" mnemonicParsing="false" onAction="#createMaze" text="create" />
-      <Button layoutX="135.0" layoutY="14.0" mnemonicParsing="false" onAction="#solveMaze" text="solve" />
+      <Button layoutX="135.0" layoutY="14.0" mnemonicParsing="false" text="solve" />
    </children>
 </AnchorPane>
