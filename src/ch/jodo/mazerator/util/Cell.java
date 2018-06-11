@@ -2,15 +2,22 @@ package ch.jodo.mazerator.util;
 
 public class Cell {
 
+    // walls between neighbors
     private boolean topWall = true;
     private boolean rightWall = true;
     private boolean bottomWall = true;
     private boolean leftWall = true;
 
+    // has cell been visited (needed for generation)
     private boolean visited = false;
+
+    // distance from target to goal (needed for solving)
     private int distance = Integer.MAX_VALUE;
+
+    // previous visited cell (needed for solving)
     private Cell previous = null;
 
+    // coordinates of the cell
     private int x;
     private int y;
 

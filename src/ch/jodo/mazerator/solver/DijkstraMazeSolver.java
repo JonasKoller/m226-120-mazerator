@@ -1,6 +1,5 @@
 package ch.jodo.mazerator.solver;
 
-import ch.jodo.mazerator.generator.MazeGeneratorUpdateEvent;
 import ch.jodo.mazerator.util.Cell;
 import ch.jodo.mazerator.util.MazeGrid;
 
@@ -67,7 +66,7 @@ public class DijkstraMazeSolver {
         updateEventListeners.add(listener);
     }
 
-    public void unSubscribe(DijkstraMazeSolverUpdateEvent listener) {
+    public void unsubscribe(DijkstraMazeSolverUpdateEvent listener) {
         updateEventListeners.remove(listener);
     }
 

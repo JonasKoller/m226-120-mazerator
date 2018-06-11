@@ -16,7 +16,7 @@ import java.util.Stack;
 
 public class Controller implements MazeGeneratorUpdateEvent {
 
-    private int mazeSize = 25;
+    private int mazeSize = 10;
     private Color visitedColor = Color.GREEN;
     private Color stackColor = Color.RED;
     private Color currentColor = Color.BLUE;
@@ -58,7 +58,7 @@ public class Controller implements MazeGeneratorUpdateEvent {
         });
 
         try {
-            Thread.sleep(0); // Wait
+            Thread.sleep(60); // Wait
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -134,8 +134,11 @@ public class Controller implements MazeGeneratorUpdateEvent {
     @FXML
     public void solveMaze() {
         DijkstraMazeSolver solver = new DijkstraMazeSolver();
+
         solver.subscribe((maze, queue, current, neighbors, solution) -> {
             Platform.runLater(() -> {
+                gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the canvas
+
                 for (Cell cell : queue) {
                     drawCell(cell, visitedColor);
                 }
@@ -154,7 +157,7 @@ public class Controller implements MazeGeneratorUpdateEvent {
             });
 
             try {
-                Thread.sleep(40); // Wait
+                Thread.sleep(60); // Wait
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
