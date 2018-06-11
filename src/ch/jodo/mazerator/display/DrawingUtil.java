@@ -62,6 +62,16 @@ public class DrawingUtil {
         drawBorder();
     }
 
+    /**
+     * A method to highlight the start and end cell
+     * @param mazeGrid Grid to get start and end cell
+     * @param startColor Color of start-cell
+     * @param endColor Color of end-cell
+     */
+    public void drawStartAndEndCell(MazeGrid mazeGrid, Color startColor, Color endColor) {
+        drawCell(mazeGrid.getStartCell(), startColor);
+        drawCell(mazeGrid.getEndCell(), endColor);
+    }
     private double getCellSize() {
         return canvasWidth / mazeSize;
     }

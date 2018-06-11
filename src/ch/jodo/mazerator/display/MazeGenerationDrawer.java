@@ -54,25 +54,26 @@ public class MazeGenerationDrawer implements MazeGeneratorEvent {
 
             // Draw the grid over the canvas
             du.drawMazeGrid(maze);
-        });
 
-        try {
-            Thread.sleep(waitTime); // Wait
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            try {
+                Thread.sleep(waitTime); // Wait
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void onFinish(MazeGrid finishedMaze) {
         if (finishedMaze == null)
             return; // Return if finishedMaze is NULL
 
-        du.clearCanvas(); // Clean the whole canvas
+        Platform.runLater(() -> {
+            du.clearCanvas(); // Clean the whole canvas
 
-        du.drawCell(finishedMaze.getStartCell(), startCellColor); // Highlight start and end
-        du.drawCell(finishedMaze.getEndCell(), endCellColor);
+            du.drawStartAndEndCell(finishedMaze, startCellColor, endCellColor);  // Highlight start and end
 
-        du.drawMazeGrid(finishedMaze); // Draw the finished maze
+            du.drawMazeGrid(finishedMaze); // Draw the finished maze
+        });
     }
 
 
@@ -102,5 +103,21 @@ public class MazeGenerationDrawer implements MazeGeneratorEvent {
 
     public void setCurrentCellColor(Color currentCellColor) {
         this.currentCellColor = currentCellColor;
+    }
+
+    public Color getStartCellColor() {
+        return startCellColor;
+    }
+
+    public void setStartCellColor(Color startCellColor) {
+        this.startCellColor = startCellColor;
+    }
+
+    public Color getEndCellColor() {
+        return endCellColor;
+    }
+
+    public void setEndCellColor(Color endCellColor) {
+        this.endCellColor = endCellColor;
     }
 }

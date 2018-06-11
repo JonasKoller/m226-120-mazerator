@@ -2,6 +2,7 @@ package ch.jodo.mazerator;
 
 import ch.jodo.mazerator.display.DrawingUtil;
 import ch.jodo.mazerator.display.MazeGenerationDrawer;
+import ch.jodo.mazerator.display.MazeSolvingDrawer;
 import ch.jodo.mazerator.generator.RecursiveBacktrackerMazeGenerator;
 import ch.jodo.mazerator.solver.DijkstraMazeSolver;
 import ch.jodo.mazerator.util.Cell;
@@ -17,13 +18,19 @@ import java.util.Optional;
 public class Controller {
 
     private static final Color COLOR_START_CELL = Color.LIGHTGREEN;
-    private static final Color COLOR_END_CELL = Color.RED;
-    private Color visitedColor = Color.GREEN;
-    private Color stackColor = Color.PINK;
+    private static final Color COLOR_END_CELL = Color.LIGHTCORAL;
     private Color currentColor = Color.BLUE;
 
-    private int mazeSize = 10;
-    private int waitTime = 100;
+    // Generation colors
+    private Color visitedColor = Color.GREEN;
+    private Color stackColor = Color.PINK;
+
+    // Solving colors
+    private Color queueColor = Color.CORNSILK;
+    private Color solutionColor = Color.LIME;
+
+    private int mazeSize = 25;
+    private int waitTime = 30;
 
     @FXML
     private Canvas canvas;
@@ -31,7 +38,7 @@ public class Controller {
     private GraphicsContext gc;
     private DrawingUtil drawingUtil;
 
-    //private Optional<MazeGrid> finishedMaze = Optional.empty();
+    private Optional<MazeGrid> finishedMaze = Optional.empty();
 
     @FXML
     public void initialize() {
@@ -42,53 +49,25 @@ public class Controller {
     @FXML
     public void createMaze() {
         RecursiveBacktrackerMazeGenerator gen = new RecursiveBacktrackerMazeGenerator();
+
         MazeGenerationDrawer mgd = new MazeGenerationDrawer(waitTime, drawingUtil, visitedColor, stackColor, currentColor, COLOR_START_CELL, COLOR_END_CELL);
         gen.subscribe(mgd);
+
         gen.subscribe((finishedMaze) -> {
-            System.out.print(finishedMaze.getStartCell());
+            this.finishedMaze = Optional.ofNullable(finishedMaze);
         });
+
         gen.generateMaze(mazeSize, mazeSize);
     }
 
-    /*
+
     @FXML
     public void solveMaze() {
         DijkstraMazeSolver solver = new DijkstraMazeSolver();
 
-        solver.subscribe((maze, queue, current) -> {
-            Platform.runLater(() -> {
-                gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the canvas
-
-                for (Cell cell : queue) {
-                    drawCell(cell, visitedColor);
-                }
-
-                drawCell(current, currentColor);
-
-                drawMazeGrid(maze);
-            });
-
-            try {
-                Thread.sleep(60); // Wait
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
+        MazeSolvingDrawer msd = new MazeSolvingDrawer(waitTime, drawingUtil, queueColor, currentColor, solutionColor, COLOR_START_CELL, COLOR_END_CELL);
+        solver.subscribe(msd);
 
         finishedMaze.ifPresent(solver::solveMaze);
     }
-    */
 }
-
-
-/*
-
-            List<Cell> solution = new LinkedList<>();
-            Cell current = maze.getEndCell();
-            while (current != sourceCell) {
-                solution.add(current);
-                notifyListenersForUpdates(maze, queue, current, new LinkedList<>(), solution);
-                current = current.getPrevious();
-            }
-
- */
