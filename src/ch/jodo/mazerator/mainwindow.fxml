@@ -2,11 +2,15 @@
 
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
-
+<?import javafx.scene.text.Font?>
 
 <TabPane prefHeight="1000.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.jodo.mazerator.Controller">
   <tabs>
@@ -14,10 +18,45 @@
          <content>
             <SplitPane dividerPositions="0.186" prefHeight="160.0" prefWidth="200.0">
               <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                <AnchorPane minHeight="0.0" minWidth="185.0" prefHeight="160.0" prefWidth="185.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#createMaze" text="create" />
-                        <Button layoutX="4.0" layoutY="38.0" mnemonicParsing="false" onAction="#solveMaze" text="solve" />
+                        <Button layoutX="12.0" layoutY="51.0" mnemonicParsing="false" onAction="#createMaze" text="Labyrinth generieren" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="50.0" />
+                        <Button layoutX="12.0" layoutY="126.0" mnemonicParsing="false" onAction="#solveMaze" text="Labyrinth lösen" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="95.0" />
+                        <Label layoutX="61.0" layoutY="29.0" text="Aktionen" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="20.0">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <Separator layoutX="-7.0" layoutY="156.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="145.0" />
+                        <Label layoutX="12.0" layoutY="158.0" text="Parameter" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="160.0">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="27.0" layoutY="171.0" text="Geschwindigkeit" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="190.0" />
+                        <Slider blockIncrement="50.0" layoutX="16.0" layoutY="204.0" majorTickUnit="100.0" max="450.0" min="50.0" minorTickCount="50" showTickLabels="true" value="150.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="210.0" />
+                        <Label layoutX="37.0" layoutY="181.0" text="Feldgrösse" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="260.0" />
+                        <Slider blockIncrement="1.0" layoutX="26.0" layoutY="214.0" majorTickUnit="5.0" max="25.0" min="5.0" minorTickCount="1" showTickLabels="true" showTickMarks="true" value="10.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="280.0" />
+                        <Separator prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="330.0" />
+                        <Label layoutX="22.0" layoutY="168.0" text="Farben" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="350.0">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label text="Start" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="380.0" />
+                        <ColorPicker layoutX="14.0" layoutY="401.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="405.0" />
+                        <Label text="Ziel" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="450.0" />
+                        <ColorPicker AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="475.0" />
+                        <Label layoutX="10.0" layoutY="10.0" text="Aktuelle Zelle" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="520.0" />
+                        <ColorPicker layoutX="10.0" layoutY="10.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="545.0" />
+                        <Label layoutX="20.0" layoutY="20.0" text="Besucht (Generieren)" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="590.0" />
+                        <ColorPicker layoutX="20.0" layoutY="20.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="615.0" />
+                        <Label layoutX="30.0" layoutY="30.0" text="Stack (Generieren)" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="660.0" />
+                        <ColorPicker layoutX="30.0" layoutY="30.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="755.0" />
+                        <ColorPicker layoutX="30.0" layoutY="30.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="685.0" />
+                        <Label layoutX="40.0" layoutY="40.0" text="Queue (Lösen)" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="730.0" />
+                        <Label layoutX="50.0" layoutY="50.0" text="Lösungsweg (Lösen)" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="800.0" />
+                        <ColorPicker layoutX="40.0" layoutY="40.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="825.0" />
                      </children>
                   </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
