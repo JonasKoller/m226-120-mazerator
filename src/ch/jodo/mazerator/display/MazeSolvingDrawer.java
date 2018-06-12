@@ -33,7 +33,7 @@ public class MazeSolvingDrawer implements DijkstraMazeSolverUpdateEvent {
     }
 
     public void onUpdate(MazeGrid maze, Queue<Cell> queue, Cell current) {
-        Platform.runLater(() -> {
+        //Platform.runLater(() -> {
 
             du.clearCanvas(); // Clear the canvas
 
@@ -53,7 +53,7 @@ public class MazeSolvingDrawer implements DijkstraMazeSolverUpdateEvent {
                 e.printStackTrace();
             }
 
-        });
+        //});
     }
 
     public void onFinish(MazeGrid finishedMaze) {
@@ -66,7 +66,7 @@ public class MazeSolvingDrawer implements DijkstraMazeSolverUpdateEvent {
         }
 
 
-        Platform.runLater(() -> {
+        //Platform.runLater(() -> {
 
             // Draw path back to start
             du.clearCanvas();
@@ -83,7 +83,7 @@ public class MazeSolvingDrawer implements DijkstraMazeSolverUpdateEvent {
 
             du.drawStartAndEndCell(finishedMaze, startCellColor, endCellColor);  // Highlight start and end
             du.drawMazeGrid(finishedMaze);
-        });
+        //});
     }
 
     public void setWaitTime(int waitTime) {

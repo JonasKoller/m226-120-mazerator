@@ -79,18 +79,18 @@ public class DrawingUtil {
     private void drawCell(final int x, final int y, final Color color) {
         double cellSize = getCellSize();
         gc.setFill(color);
-        gc.fillRect(Math.floor(x * cellSize), Math.floor(y * cellSize), Math.floor(cellSize), Math.floor(cellSize));
+        gc.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
     }
 
-    private void drawLine(int x1, int y1, int x2, int y2, double factor) {
+    private void drawLine(double x1, double y1, double x2, double y2, double factor) {
         drawLine(x1, y1, x2, y2, factor, 1);
     }
 
-    private void drawLine(int x1, int y1, int x2, int y2, int width) {
+    private void drawLine(double x1, double y1, double x2, double y2, int width) {
         drawLine(x1, y1, x2, y2, 1, width);
     }
 
-    private void drawLine(int x1, int y1, int x2, int y2, double factor, int width) {
+    private void drawLine(double x1, double y1, double x2, double y2, double factor, double width) {
         gc.setLineWidth(width);
         gc.beginPath();
         gc.moveTo(x1 * factor, y1 * factor);
@@ -99,10 +99,10 @@ public class DrawingUtil {
     }
 
     private void drawBorder() {
-        drawLine(0, (int) getCellSize(), 0, (int) canvasHeight, 6); // Linken Rand zeichnen
-        drawLine(0, (int) canvasHeight, (int) canvasWidth, (int) canvasHeight, 6); // Unteren Rand zeichen
-        drawLine((int) canvasWidth, 0, (int) canvasWidth, (int) (canvasHeight - getCellSize()), 6); // Rechten Rand zeichnen
-        drawLine(0, 0, (int) canvasWidth, 0, 6); // Oberen Rand zeichen
+        drawLine(0, getCellSize(), 0, canvasHeight, 6);                          // Linken Rand zeichnen
+        drawLine(0, canvasHeight, canvasWidth, canvasHeight, 6);                    // Unteren Rand zeichen
+        drawLine(canvasWidth, 0, canvasWidth, (canvasHeight - getCellSize()), 6);   // Rechten Rand zeichnen
+        drawLine(0, 0, canvasWidth, 0, 6);                                   // Oberen Rand zeichen
     }
 
 

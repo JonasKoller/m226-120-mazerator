@@ -29,8 +29,8 @@ public class Controller {
     private Color queueColor = Color.CORNSILK;
     private Color solutionColor = Color.LIME;
 
-    private int mazeSize = 25;
-    private int waitTime = 30;
+    private int mazeSize = 10;
+    private int waitTime = 200;
 
     @FXML
     private Canvas canvas;
@@ -51,9 +51,9 @@ public class Controller {
         RecursiveBacktrackerMazeGenerator gen = new RecursiveBacktrackerMazeGenerator();
 
         MazeGenerationDrawer mgd = new MazeGenerationDrawer(waitTime, drawingUtil, visitedColor, stackColor, currentColor, COLOR_START_CELL, COLOR_END_CELL);
-        gen.subscribe(mgd);
+        gen.subscribe(mgd); // subscribe with the drawer
 
-        gen.subscribe((finishedMaze) -> {
+        gen.subscribe((finishedMaze) -> { // Subscribe to get the finished maze
             this.finishedMaze = Optional.ofNullable(finishedMaze);
         });
 

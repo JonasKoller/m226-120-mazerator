@@ -34,7 +34,7 @@ public class MazeGenerationDrawer implements MazeGeneratorEvent {
     }
 
     public void onUpdate(MazeGrid maze, Stack<Cell> stack, Cell current) {
-        Platform.runLater(() -> {
+        //Platform.runLater(() -> {
             du.clearCanvas(); // clear everything of the canvas
 
             // Go through all visited cells and highlight them
@@ -60,20 +60,20 @@ public class MazeGenerationDrawer implements MazeGeneratorEvent {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        });
+        //});
     }
 
     public void onFinish(MazeGrid finishedMaze) {
         if (finishedMaze == null)
             return; // Return if finishedMaze is NULL
 
-        Platform.runLater(() -> {
+        //Platform.runLater(() -> {
             du.clearCanvas(); // Clean the whole canvas
 
             du.drawStartAndEndCell(finishedMaze, startCellColor, endCellColor);  // Highlight start and end
 
             du.drawMazeGrid(finishedMaze); // Draw the finished maze
-        });
+        //});
     }
 
 

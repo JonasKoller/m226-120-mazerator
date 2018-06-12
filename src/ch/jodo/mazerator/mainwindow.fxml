@@ -2,12 +2,37 @@
 
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.jodo.mazerator.Controller">
-   <children>
-      <Canvas fx:id="canvas" height="700.0" layoutX="50.0" width="700.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" />
-      <Button layoutX="75.0" layoutY="14.0" mnemonicParsing="false" onAction="#createMaze" text="create" />
-      <Button layoutX="135.0" layoutY="14.0" mnemonicParsing="false" onAction="#solveMaze" text="solve" />
-   </children>
-</AnchorPane>
+
+<TabPane prefHeight="1000.0" prefWidth="1000.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.jodo.mazerator.Controller">
+  <tabs>
+    <Tab text="Maze">
+         <content>
+            <SplitPane dividerPositions="0.186" prefHeight="160.0" prefWidth="200.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#createMaze" text="create" />
+                        <Button layoutX="4.0" layoutY="38.0" mnemonicParsing="false" onAction="#solveMaze" text="solve" />
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                     <children>
+                        <Canvas fx:id="canvas" height="800.0" width="800.0" />
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+         </content>
+    </Tab>
+    <Tab text="Log">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>
