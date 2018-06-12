@@ -5,69 +5,151 @@ import ch.jodo.mazerator.display.MazeGenerationDrawer;
 import ch.jodo.mazerator.display.MazeSolvingDrawer;
 import ch.jodo.mazerator.generator.RecursiveBacktrackerMazeGenerator;
 import ch.jodo.mazerator.solver.DijkstraMazeSolver;
-import ch.jodo.mazerator.util.Cell;
 import ch.jodo.mazerator.util.MazeGrid;
-import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Slider;
 import javafx.scene.paint.Color;
 
 import java.util.Optional;
 
 public class Controller {
 
-    private static final Color COLOR_START_CELL = Color.LIGHTGREEN;
-    private static final Color COLOR_END_CELL = Color.LIGHTCORAL;
-    private Color currentColor = Color.BLUE;
+	private static final Color COLOR_START_CELL = Color.LIGHTGREEN;
+	private static final Color COLOR_END_CELL = Color.LIGHTCORAL;
+	private static final Color CURRENT_COLOR = Color.BLUE;
 
-    // Generation colors
-    private Color visitedColor = Color.GREEN;
-    private Color stackColor = Color.PINK;
+	// Generation colors
+	private static final Color VISITED_COLOR = Color.GREEN;
+	private static final Color STACK_COLOR = Color.PINK;
 
-    // Solving colors
-    private Color queueColor = Color.CORNSILK;
-    private Color solutionColor = Color.LIME;
+	// Solving colors
+	private static final Color QUEUE_COLOR = Color.CORNSILK;
+	private static final Color SOLUTION_COLOR = Color.LIME;
 
-    private int mazeSize = 10;
-    private int waitTime = 200;
+	private int mazeSize = 10;
 
-    @FXML
-    private Canvas canvas;
+	@FXML
+	private Canvas canvas;
 
-    private GraphicsContext gc;
-    private DrawingUtil drawingUtil;
+	@FXML
+	private Button editMazeButton;
 
-    private Optional<MazeGrid> finishedMaze = Optional.empty();
+	@FXML
+	private ColorPicker startColorPicker;
+	@FXML
+	private ColorPicker endColorPicker;
+	@FXML
+	private ColorPicker currentColorPicker;
 
-    @FXML
-    public void initialize() {
-        gc = canvas.getGraphicsContext2D();
-        drawingUtil = new DrawingUtil(gc, canvas.getWidth(), canvas.getHeight(), mazeSize);
-    }
+	@FXML
+	private ColorPicker visitedColorPicker;
+	@FXML
+	private ColorPicker stackColorPicker;
+	@FXML
+	private ColorPicker queueColorPicker;
+	@FXML
+	private ColorPicker solutionColorPicker;
 
-    @FXML
-    public void createMaze() {
-        RecursiveBacktrackerMazeGenerator gen = new RecursiveBacktrackerMazeGenerator();
+	@FXML
+	private Slider waitTimeSlider;
 
-        MazeGenerationDrawer mgd = new MazeGenerationDrawer(waitTime, drawingUtil, visitedColor, stackColor, currentColor, COLOR_START_CELL, COLOR_END_CELL);
-        gen.subscribe(mgd); // subscribe with the drawer
+	private IntegerProperty waitTimeProperty;
 
-        gen.subscribe((finishedMaze) -> { // Subscribe to get the finished maze
-            this.finishedMaze = Optional.ofNullable(finishedMaze);
-        });
+	private GraphicsContext gc;
+	private DrawingUtil drawingUtil;
 
-        gen.generateMaze(mazeSize, mazeSize);
-    }
+	private Optional<MazeGrid> finishedMaze = Optional.empty();
+
+	@FXML
+	public void initialize() {
+		gc = canvas.getGraphicsContext2D();
+		drawingUtil = new DrawingUtil(gc, canvas.getWidth(), canvas.getHeight(), mazeSize);
 
 
-    @FXML
-    public void solveMaze() {
-        DijkstraMazeSolver solver = new DijkstraMazeSolver();
+		startColorPicker.setValue(COLOR_START_CELL);
+		endColorPicker.setValue(COLOR_END_CELL);
+		currentColorPicker.setValue(CURRENT_COLOR);
 
-        MazeSolvingDrawer msd = new MazeSolvingDrawer(waitTime, drawingUtil, queueColor, currentColor, solutionColor, COLOR_START_CELL, COLOR_END_CELL);
-        solver.subscribe(msd);
+		visitedColorPicker.setValue(VISITED_COLOR);
+		stackColorPicker.setValue(STACK_COLOR);
 
-        finishedMaze.ifPresent(solver::solveMaze);
-    }
+		solutionColorPicker.setValue(SOLUTION_COLOR);
+		queueColorPicker.setValue(QUEUE_COLOR);
+
+		waitTimeProperty = new SimpleIntegerProperty();
+		waitTimeProperty.bindBidirectional(waitTimeSlider.valueProperty());
+	}
+
+	@FXML
+	public void createMaze() {
+		RecursiveBacktrackerMazeGenerator gen = new RecursiveBacktrackerMazeGenerator();
+
+		MazeGenerationDrawer mgd = new MazeGenerationDrawer(
+				waitTimeProperty,
+				drawingUtil,
+				visitedColorPicker.valueProperty(),
+				stackColorPicker.valueProperty(),
+				currentColorPicker.valueProperty(),
+				startColorPicker.valueProperty(),
+				endColorPicker.valueProperty()
+		);
+		gen.subscribe(mgd); // subscribe with the drawer
+
+		gen.subscribe((finishedMaze) -> { // Subscribe to get the finished maze
+			this.finishedMaze = Optional.ofNullable(finishedMaze);
+		});
+
+		gen.generateMaze(mazeSize, mazeSize);
+	}
+
+
+	@FXML
+	public void solveMaze() {
+		DijkstraMazeSolver solver = new DijkstraMazeSolver();
+
+		MazeSolvingDrawer msd = new MazeSolvingDrawer(
+				waitTimeProperty,
+				drawingUtil,
+				queueColorPicker.valueProperty(),
+				currentColorPicker.valueProperty(),
+				solutionColorPicker.valueProperty(),
+				startColorPicker.valueProperty(),
+				endColorPicker.valueProperty()
+		);
+		solver.subscribe(msd);
+
+		finishedMaze.ifPresent(solver::solveMaze);
+	}
+
+	@FXML
+	private void editMaze() {
+		updateEditMazeButton();
+		if (this.finishedMaze.isPresent()) {
+			solveMaze();
+		} else {
+			createMaze();
+		}
+	}
+
+	@FXML
+	private void clearMaze() {
+		this.finishedMaze = Optional.empty();
+		updateEditMazeButton();
+	}
+
+	private void updateEditMazeButton() {
+		String newButtonText;
+		if (this.finishedMaze.isPresent()) {
+			newButtonText = "Labyrinth generieren";
+		} else {
+			newButtonText = "Labyrinth lösen";
+		}
+		editMazeButton.setText(newButtonText);
+	}
 }
