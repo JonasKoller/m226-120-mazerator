@@ -141,6 +141,8 @@ public class Controller {
 	private void clearMaze() {
 		this.finishedMaze = Optional.empty();
 		updateEditMazeButton();
+		editMazeButton.setText("Labyrinth generieren");
+		drawingUtil.clearCanvas();
 	}
 
 	private void updateEditMazeButton() {
