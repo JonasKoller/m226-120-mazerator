@@ -69,8 +69,8 @@ public class Controller {
 	@FXML
 	public void initialize() {
 		gc = canvas.getGraphicsContext2D();
-		drawingUtil = new DrawingUtil(gc, canvas.getWidth(), canvas.getHeight(), mazeSize);
 
+		drawingUtil = new DrawingUtil(gc, canvas.getWidth(), canvas.getHeight(), mazeSize);
 
 		startColorPicker.setValue(COLOR_START_CELL);
 		endColorPicker.setValue(COLOR_END_CELL);
