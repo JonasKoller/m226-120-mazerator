@@ -20,6 +20,7 @@ import java.util.Optional;
 
 public class Controller {
 
+	// setting the default colors
 	private static final Color COLOR_START_CELL = Color.LIGHTGREEN;
 	private static final Color COLOR_END_CELL = Color.LIGHTCORAL;
 	private static final Color CURRENT_COLOR = Color.BLUE;
@@ -66,6 +67,9 @@ public class Controller {
 
 	private Optional<MazeGrid> finishedMaze = Optional.empty();
 
+	/***
+	 * setting the initial state of the Gui components
+	 */
 	@FXML
 	public void initialize() {
 		gc = canvas.getGraphicsContext2D();
@@ -86,6 +90,9 @@ public class Controller {
 		waitTimeProperty.bindBidirectional(waitTimeSlider.valueProperty());
 	}
 
+	/***
+	 * creates a new Maze
+	 */
 	@FXML
 	public void createMaze() {
 		RecursiveBacktrackerMazeGenerator gen = new RecursiveBacktrackerMazeGenerator();
@@ -109,6 +116,9 @@ public class Controller {
 	}
 
 
+	/***
+	 * Solves the current maze
+	 */
 	@FXML
 	public void solveMaze() {
 		DijkstraMazeSolver solver = new DijkstraMazeSolver();
@@ -127,6 +137,10 @@ public class Controller {
 		finishedMaze.ifPresent(solver::solveMaze);
 	}
 
+	/***
+	 * If there is a maze present it solves it
+	 * and when there is no maze present it generates on
+	 */
 	@FXML
 	private void editMaze() {
 		updateEditMazeButton();
@@ -137,6 +151,9 @@ public class Controller {
 		}
 	}
 
+	/***
+	 * clear the canvas and set the text on the edit button
+	 */
 	@FXML
 	private void clearMaze() {
 		this.finishedMaze = Optional.empty();
@@ -145,6 +162,9 @@ public class Controller {
 		drawingUtil.clearCanvas();
 	}
 
+	/***
+	 * updates the text on the edit button
+	 */
 	private void updateEditMazeButton() {
 		String newButtonText;
 		if (this.finishedMaze.isPresent()) {
