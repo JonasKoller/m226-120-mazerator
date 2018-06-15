@@ -7,69 +7,82 @@ import java.util.*;
 
 public class DijkstraMazeSolver {
 
-    private List<DijkstraMazeSolverUpdateEvent> updateEventListeners = new LinkedList<>();
+	private List<DijkstraMazeSolverEvent> eventListeners = new LinkedList<>();
+	private List<DijkstraMazeSolverFinishEvent> finishEventListeners = new LinkedList<>();
 
-    public void solveMaze(MazeGrid maze) {
+	public void solveMaze(MazeGrid maze) {
 
-        new Thread(() -> {
+		new Thread(() -> {
 
-            Cell sourceCell = maze.getStartCell(); // Define start cell
+			Cell sourceCell = maze.getStartCell(); // Define start cell
 
-            Queue<Cell> queue = new PriorityQueue<>(Comparator.comparing(
-                    Cell::getDistance
-            ));
+			Queue<Cell> queue = new PriorityQueue<>(Comparator.comparing(
+					Cell::getDistance
+			));
 
-            // Add all cells to the queue
-            for (Cell c : maze.getCells()) {
-                if (sourceCell == c) // Set the distance of start cell to 0
-                    c.setDistance(0);
+			// Add all cells to the queue
+			for (Cell c: maze.getCells()) {
+				if (sourceCell == c) // Set the distance of start cell to 0
+					c.setDistance(0);
 
-                queue.add(c);
-            }
+				queue.add(c);
+			}
 
-            while (!queue.isEmpty()) {
+			while (!queue.isEmpty()) {
 
-                Cell current = queue.poll();
-                List<Cell> neighbors = maze.getTouchableNeighbors(current.getX(), current.getY());
+				Cell current = queue.poll();
+				List<Cell> neighbors = maze.getTouchableNeighbors(current.getX(), current.getY());
 
-                notifyListenersForUpdates(maze, queue, current);
+				notifyListenersForUpdates(maze, queue, current);
 
-                for (Cell n : neighbors) {
-                    if (queue.contains(n)) {
-                        int newDistance = current.getDistance() + 1;
+				for (Cell n: neighbors) {
+					if (queue.contains(n)) {
+						int newDistance = current.getDistance() + 1;
 
-                        if (newDistance < n.getDistance()) {
-                            n.setDistance(newDistance);
-                            n.setPrevious(current);
+						if (newDistance < n.getDistance()) {
+							n.setDistance(newDistance);
+							n.setPrevious(current);
 
-                            queue.remove(n); // Add and remove cell to update queue
-                            queue.add(n);
-                        }
-                    }
-                }
-            }
+							queue.remove(n); // Add and remove cell to update queue
+							queue.add(n);
+						}
+					}
+				}
+			}
 
-            notifyListenersForFinish(maze);
-        }).start();
+			notifyListenersForFinish(maze);
+		}).start();
 
-    }
+	}
 
 
-    public void subscribe(DijkstraMazeSolverUpdateEvent listener) {
-        updateEventListeners.add(listener);
-    }
+	public void subscribe(DijkstraMazeSolverEvent listener) {
+		eventListeners.add(listener);
+	}
 
-    public void unsubscribe(DijkstraMazeSolverUpdateEvent listener) {
-        updateEventListeners.remove(listener);
-    }
+	public void subscribe(DijkstraMazeSolverFinishEvent listener) {
+		finishEventListeners.add(listener);
+	}
 
-    private void notifyListenersForUpdates(final MazeGrid maze, final Queue<Cell> queue, final Cell current) {
-        for (DijkstraMazeSolverUpdateEvent listener : updateEventListeners)
-            listener.onUpdate(maze, queue, current);
-    }
+	public void unsubscribe(DijkstraMazeSolverEvent listener) {
+		eventListeners.remove(listener);
+	}
 
-    private void notifyListenersForFinish(final MazeGrid finishedMaze) {
-        for (DijkstraMazeSolverUpdateEvent listener : updateEventListeners)
-            listener.onFinish(finishedMaze);
-    }
+	public void unsubscribe(DijkstraMazeSolverFinishEvent listener) {
+		finishEventListeners.remove(listener);
+	}
+
+	private void notifyListenersForUpdates(final MazeGrid maze, final Queue<Cell> queue, final Cell current) {
+		for (DijkstraMazeSolverEvent listener: eventListeners)
+			listener.onUpdate(maze, queue, current);
+	}
+
+	private void notifyListenersForFinish(final MazeGrid finishedMaze) {
+		for (DijkstraMazeSolverEvent listener: eventListeners)
+			listener.onFinish(finishedMaze);
+
+		for (DijkstraMazeSolverFinishEvent listener: finishEventListeners) {
+			listener.onFinish(finishedMaze);
+		}
+	}
 }

@@ -5,7 +5,7 @@ import ch.jodo.mazerator.util.MazeGrid;
 
 import java.util.Queue;
 
-public interface DijkstraMazeSolverUpdateEvent {
+public interface DijkstraMazeSolverEvent {
     void onUpdate(final MazeGrid maze, final Queue<Cell> queue, final Cell current);
 
     void onFinish(final MazeGrid finishedMaze);

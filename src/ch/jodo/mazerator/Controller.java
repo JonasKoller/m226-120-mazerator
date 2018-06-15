@@ -35,6 +35,8 @@ public class Controller {
 
 	private int mazeSize = 10;
 
+	private boolean isWorking = false;
+
 	@FXML
 	private Canvas canvas;
 
@@ -95,6 +97,7 @@ public class Controller {
 	 */
 	@FXML
 	public void createMaze() {
+		isWorking = true;
 		RecursiveBacktrackerMazeGenerator gen = new RecursiveBacktrackerMazeGenerator();
 
 		MazeGenerationDrawer mgd = new MazeGenerationDrawer(
@@ -110,6 +113,7 @@ public class Controller {
 
 		gen.subscribe((finishedMaze) -> { // Subscribe to get the finished maze
 			this.finishedMaze = Optional.ofNullable(finishedMaze);
+			isWorking = false;
 		});
 
 		gen.generateMaze(mazeSize, mazeSize);
@@ -121,6 +125,7 @@ public class Controller {
 	 */
 	@FXML
 	public void solveMaze() {
+		isWorking = true;
 		DijkstraMazeSolver solver = new DijkstraMazeSolver();
 
 		MazeSolvingDrawer msd = new MazeSolvingDrawer(
@@ -134,6 +139,10 @@ public class Controller {
 		);
 		solver.subscribe(msd);
 
+		solver.subscribe((mazeGrid) -> {
+			isWorking = false;
+		});
+
 		finishedMaze.ifPresent(solver::solveMaze);
 	}
 
@@ -143,6 +152,9 @@ public class Controller {
 	 */
 	@FXML
 	private void editMaze() {
+		if (isWorking)
+			return;
+
 		updateEditMazeButton();
 		if (this.finishedMaze.isPresent()) {
 			solveMaze();
@@ -156,6 +168,9 @@ public class Controller {
 	 */
 	@FXML
 	private void clearMaze() {
+		if (isWorking)
+			return;
+
 		this.finishedMaze = Optional.empty();
 		updateEditMazeButton();
 		editMazeButton.setText("Labyrinth generieren");

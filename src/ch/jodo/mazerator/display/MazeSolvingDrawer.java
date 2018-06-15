@@ -1,6 +1,6 @@
 package ch.jodo.mazerator.display;
 
-import ch.jodo.mazerator.solver.DijkstraMazeSolverUpdateEvent;
+import ch.jodo.mazerator.solver.DijkstraMazeSolverEvent;
 import ch.jodo.mazerator.util.Cell;
 import ch.jodo.mazerator.util.MazeGrid;
 import javafx.beans.property.IntegerProperty;
@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class MazeSolvingDrawer implements DijkstraMazeSolverUpdateEvent {
+public class MazeSolvingDrawer implements DijkstraMazeSolverEvent {
 
 	private IntegerProperty waitTime;
 	private DrawingUtil du;
@@ -34,7 +34,6 @@ public class MazeSolvingDrawer implements DijkstraMazeSolverUpdateEvent {
 	}
 
 	public void onUpdate(MazeGrid maze, Queue<Cell> queue, Cell current) {
-		//Platform.runLater(() -> {
 
 		du.clearCanvas(); // Clear the canvas
 
@@ -53,8 +52,6 @@ public class MazeSolvingDrawer implements DijkstraMazeSolverUpdateEvent {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
-		//});
 	}
 
 	public void onFinish(MazeGrid finishedMaze) {
@@ -66,8 +63,6 @@ public class MazeSolvingDrawer implements DijkstraMazeSolverUpdateEvent {
 			current = current.getPrevious();
 		}
 
-
-		//Platform.runLater(() -> {
 
 		// Draw path back to start
 		du.clearCanvas();
@@ -84,7 +79,6 @@ public class MazeSolvingDrawer implements DijkstraMazeSolverUpdateEvent {
 
 		du.drawStartAndEndCell(finishedMaze, startCellColor.get(), endCellColor.get());  // Highlight start and end
 		du.drawMazeGrid(finishedMaze);
-		//});
 	}
 
 	public void setWaitTime(IntegerProperty waitTime) {
